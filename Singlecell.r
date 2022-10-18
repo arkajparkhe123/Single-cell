@@ -22,13 +22,13 @@ pbmc = FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000)
 # Identify the 10 most highly variable genes
 top10 = head(VariableFeatures(pbmc), 10)
 top10
-# plot variable features with and without labels
+# plot variable features
 plot1 = VariableFeaturePlot(pbmc)
 plot2 = LabelPoints(plot = plot1, points = top10, repel = TRUE)
 plot2
 all.genes = rownames(pbmc)
 pbmc = ScaleData(pbmc, features = all.genes)
-## Centering and scaling data matrix
+## scaling matrix
 pbmc@assays$RNA@scale.data[1:50, 1:5]
 pbmc = RunPCA(pbmc, features = VariableFeatures(object = pbmc))
 DimHeatmap(pbmc, dims = 1:15, cells = 500, balanced = TRUE)
@@ -47,5 +47,6 @@ a = pbmc.markers %>% group_by(cluster) %>% top_n(n = 2, wt = avg_log2FC)
 a
 genes = a %>% pull(gene)
 genes
+#Feature plot
 FeaturePlot(pbmc, features = genes[1:2])
 FeaturePlot(pbmc, features = genes[1:2], cols = c("orange", "pink"))
